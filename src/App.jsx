@@ -41,6 +41,9 @@ function App() {
   const [currentImage, setCurrentImage] = useState(null);
   const [imageList, setImageList] = useState([]);
 
+  // 🍔 MENU BURGER
+  const [menuOpen, setMenuOpen] = useState(false);
+
   const openLightbox = (img, list) => {
     setCurrentImage(img);
     setImageList(list);
@@ -63,24 +66,54 @@ function App() {
     setCurrentImage(imageList[prev]);
   };
 
+  const handleNavClick = () => {
+    // on ferme le menu burger quand on clique sur un lien
+    setMenuOpen(false);
+  };
+
   return (
     <>
       {/* HEADER */}
       <header className="topbar">
-        <div className="topbar-logo">GOAT SIDE x BIL’ART</div>
+        <div className="topbar-left">
+          <div className="topbar-logo">GOAT SIDE x BIL’ART</div>
 
-        <nav className="topbar-nav">
-          <a href="#packs">Packs</a>
-          <a href="#sites">Sites & SEO</a>
-          <a href="#case">Cas client</a>
-          <a href="#flyers">Flyers</a>
-          <a href="#realisations">Réalisations</a>
+          {/* BOUTON BURGER (mobile uniquement via CSS) */}
+          <button
+            type="button"
+            className={`burger ${menuOpen ? 'is-open' : ''}`}
+            aria-label="Ouvrir le menu"
+            onClick={() => setMenuOpen((v) => !v)}
+          >
+            <span />
+            <span />
+            <span />
+          </button>
+        </div>
+
+        <nav className={`topbar-nav ${menuOpen ? 'is-open' : ''}`}>
+          <a href="#packs" onClick={handleNavClick}>
+            Packs
+          </a>
+          <a href="#sites" onClick={handleNavClick}>
+            Sites & SEO
+          </a>
+          <a href="#case" onClick={handleNavClick}>
+            Cas client
+          </a>
+          <a href="#flyers" onClick={handleNavClick}>
+            Flyers
+          </a>
+          <a href="#realisations" onClick={handleNavClick}>
+            Réalisations
+          </a>
 
           <a
             href={whatsappLink}
             target="_blank"
             rel="noreferrer"
             className="nav-cta"
+            onClick={handleNavClick}
           >
             Réserver
           </a>
