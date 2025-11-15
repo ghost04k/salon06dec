@@ -41,8 +41,8 @@ function App() {
   const [currentImage, setCurrentImage] = useState(null);
   const [imageList, setImageList] = useState([]);
 
-  // 🍔 MENU BURGER
-  const [menuOpen, setMenuOpen] = useState(false);
+  // 🔽 NAV MOBILE
+  const [isNavOpen, setIsNavOpen] = useState(false);
 
   const openLightbox = (img, list) => {
     setCurrentImage(img);
@@ -66,9 +66,13 @@ function App() {
     setCurrentImage(imageList[prev]);
   };
 
-  const handleNavClick = () => {
-    // on ferme le menu burger quand on clique sur un lien
-    setMenuOpen(false);
+  // utilitaire : quand on clique sur un lien de nav sur mobile, on referme le menu
+  const handleNavClick = (hash) => {
+    const el = document.querySelector(hash);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    setIsNavOpen(false);
   };
 
   return (
@@ -78,12 +82,10 @@ function App() {
         <div className="topbar-left">
           <div className="topbar-logo">GOAT SIDE x BIL’ART</div>
 
-          {/* BOUTON BURGER (mobile uniquement via CSS) */}
           <button
             type="button"
-            className={`burger ${menuOpen ? 'is-open' : ''}`}
-            aria-label="Ouvrir le menu"
-            onClick={() => setMenuOpen((v) => !v)}
+            className={`burger ${isNavOpen ? 'is-open' : ''}`}
+            onClick={() => setIsNavOpen((open) => !open)}
           >
             <span />
             <span />
@@ -91,20 +93,20 @@ function App() {
           </button>
         </div>
 
-        <nav className={`topbar-nav ${menuOpen ? 'is-open' : ''}`}>
-          <a href="#packs" onClick={handleNavClick}>
+        <nav className={`topbar-nav ${isNavOpen ? 'is-open' : ''}`}>
+          <a href="#packs" onClick={() => handleNavClick('#packs')}>
             Packs
           </a>
-          <a href="#sites" onClick={handleNavClick}>
+          <a href="#sites" onClick={() => handleNavClick('#sites')}>
             Sites & SEO
           </a>
-          <a href="#case" onClick={handleNavClick}>
+          <a href="#case" onClick={() => handleNavClick('#case')}>
             Cas client
           </a>
-          <a href="#flyers" onClick={handleNavClick}>
+          <a href="#flyers" onClick={() => handleNavClick('#flyers')}>
             Flyers
           </a>
-          <a href="#realisations" onClick={handleNavClick}>
+          <a href="#realisations" onClick={() => handleNavClick('#realisations')}>
             Réalisations
           </a>
 
@@ -113,7 +115,7 @@ function App() {
             target="_blank"
             rel="noreferrer"
             className="nav-cta"
-            onClick={handleNavClick}
+            onClick={() => setIsNavOpen(false)}
           >
             Réserver
           </a>
