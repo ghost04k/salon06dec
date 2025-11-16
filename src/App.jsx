@@ -1,48 +1,50 @@
-import { useState } from 'react';
-import './App.css';
+import { useState } from "react";
+import "./App.css";
 
 /* FLYERS */
-import Flyer1 from './assets/flyer1.jpg';
-import Flyer2 from './assets/flyer2.jpg';
-import Flyer3 from './assets/flyer3.jpg';
-import Flyer4 from './assets/flyer4.jpg';
-import Flyer5 from './assets/flyer5.jpg';
-import Flyer6 from './assets/flyer6.jpg';
+import Flyer1 from "./assets/flyer1.jpg";
+import Flyer2 from "./assets/flyer2.jpg";
+import Flyer3 from "./assets/flyer3.jpg";
+import Flyer4 from "./assets/flyer4.jpg";
+import Flyer5 from "./assets/flyer5.jpg";
+import Flyer6 from "./assets/flyer6.jpg";
 
 /* CASE CLIENT MAP */
-import MayaMap from './assets/maya-map.png';
+import MayaMap from "./assets/maya-map.png";
 
 /* REALISATIONS — PRODUITS */
-import Madame1 from './assets/madame1.jpg';
-import Madame2 from './assets/madame2.jpg';
-import Madame3 from './assets/madame3.jpg';
-import Madame4 from './assets/madame4.jpg';
-import Madame5 from './assets/madame5.jpg';
-import Madame6 from './assets/madame6.jpg';
-import Madame7 from './assets/madame7.jpg';
+import Madame1 from "./assets/madame1.jpg";
+import Madame2 from "./assets/madame2.jpg";
+import Madame3 from "./assets/madame3.jpg";
+import Madame4 from "./assets/madame4.jpg";
+import Madame5 from "./assets/madame5.jpg";
+import Madame6 from "./assets/madame6.jpg";
+import Madame7 from "./assets/madame7.jpg";
 
 /* REALISATIONS — MODELES */
-import Model1 from './assets/model1.jpg';
-import Model2 from './assets/model2.jpg';
-import Model3 from './assets/model3.jpg';
-import Model4 from './assets/model4.jpg';
+import Model1 from "./assets/model1.jpg";
+import Model2 from "./assets/model2.jpg";
+import Model3 from "./assets/model3.jpg";
+import Model4 from "./assets/model4.jpg";
 
 function App() {
-  // 🔗 Lien WhatsApp
-  const whatsappNumber = '33624637237';
+  // 🔗 WhatsApp
+  const whatsappNumber = "33624637237";
   const whatsappMessage =
-    'Bonjour, je suis intéressé par vos packs pour le salon du 6 décembre 🙂';
+    "Bonjour, je suis intéressé par vos packs pour le salon du 6 décembre 🙂";
   const whatsappLink = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
     whatsappMessage
   )}`;
 
-  // 🔍 LIGHTBOX STATE
+  // 🔍 Lightbox
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [currentImage, setCurrentImage] = useState(null);
   const [imageList, setImageList] = useState([]);
 
-  // 🔽 NAV MOBILE
-  const [isNavOpen, setIsNavOpen] = useState(false);
+  // Menu mobile (burger)
+  const [navOpen, setNavOpen] = useState(false);
+  const toggleNav = () => setNavOpen((v) => !v);
+  const closeNav = () => setNavOpen(false);
 
   const openLightbox = (img, list) => {
     setCurrentImage(img);
@@ -66,26 +68,31 @@ function App() {
     setCurrentImage(imageList[prev]);
   };
 
-  // utilitaire : quand on clique sur un lien de nav sur mobile, on referme le menu
-  const handleNavClick = (hash) => {
-    const el = document.querySelector(hash);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-    setIsNavOpen(false);
-  };
+  const flyerImages = [Flyer1, Flyer2, Flyer3, Flyer4, Flyer5, Flyer6];
+  const packshotImages = [
+    Madame1,
+    Madame2,
+    Madame3,
+    Madame4,
+    Madame5,
+    Madame6,
+    Madame7,
+  ];
+  const modelImages = [Model1, Model2, Model3, Model4];
 
   return (
     <>
       {/* HEADER */}
       <header className="topbar">
         <div className="topbar-left">
-          <div className="topbar-logo">GOAT SIDE x BIL’ART</div>
+          <div className="topbar-logo">GOAT SIDE X BIL’ART</div>
 
+          {/* Burger visible uniquement sur mobile (CSS) */}
           <button
             type="button"
-            className={`burger ${isNavOpen ? 'is-open' : ''}`}
-            onClick={() => setIsNavOpen((open) => !open)}
+            className={`burger ${navOpen ? "is-open" : ""}`}
+            onClick={toggleNav}
+            aria-label="Ouvrir le menu"
           >
             <span />
             <span />
@@ -93,20 +100,21 @@ function App() {
           </button>
         </div>
 
-        <nav className={`topbar-nav ${isNavOpen ? 'is-open' : ''}`}>
-          <a href="#packs" onClick={() => handleNavClick('#packs')}>
+        {/* NAV */}
+        <nav className={`topbar-nav ${navOpen ? "is-open" : ""}`}>
+          <a href="#packs" onClick={closeNav}>
             Packs
           </a>
-          <a href="#sites" onClick={() => handleNavClick('#sites')}>
+          <a href="#sites" onClick={closeNav}>
             Sites & SEO
           </a>
-          <a href="#case" onClick={() => handleNavClick('#case')}>
+          <a href="#case" onClick={closeNav}>
             Cas client
           </a>
-          <a href="#flyers" onClick={() => handleNavClick('#flyers')}>
+          <a href="#flyers" onClick={closeNav}>
             Flyers
           </a>
-          <a href="#realisations" onClick={() => handleNavClick('#realisations')}>
+          <a href="#realisations" onClick={closeNav}>
             Réalisations
           </a>
 
@@ -115,7 +123,7 @@ function App() {
             target="_blank"
             rel="noreferrer"
             className="nav-cta"
-            onClick={() => setIsNavOpen(false)}
+            onClick={closeNav}
           >
             Réserver
           </a>
@@ -125,11 +133,12 @@ function App() {
       {/* MAIN CONTENT */}
       <main className="page">
         {/* HERO */}
-        <section className="hero">
+        <section className="hero" id="top">
           <div className="badge">Salon du 06 Décembre – Lyon</div>
 
           <h1 className="hero-title">
-            Contenu pro & stylé <br /> pour exposants ambitieux
+            Contenu pro & stylé <br />
+            pour exposants ambitieux
           </h1>
 
           <p className="hero-icons">
@@ -159,7 +168,7 @@ function App() {
           </div>
 
           <div className="cards-scroll">
-            {/* PACK ESSENTIEL */}
+            {/* ESSENTIEL */}
             <article className="card pack-card">
               <div className="pack-header">
                 <span className="pack-icon">🎯</span>
@@ -181,7 +190,7 @@ function App() {
               <div className="pack-footer">Durée : 10–15 minutes</div>
             </article>
 
-            {/* PACK PREMIUM */}
+            {/* PREMIUM */}
             <article className="card pack-card pack-popular">
               <div className="pack-badge">Le plus choisi</div>
 
@@ -205,7 +214,7 @@ function App() {
               <div className="pack-footer">Idéal : mode, beauté, food</div>
             </article>
 
-            {/* PACK BOOST */}
+            {/* BOOST */}
             <article className="card pack-card pack-boost">
               <div className="pack-header">
                 <span className="pack-icon">🚀</span>
@@ -213,9 +222,7 @@ function App() {
                 <p className="pack-price">180 €</p>
               </div>
 
-              <p className="pack-desc">
-                Le pack ultime pour exposants ambitieux.
-              </p>
+              <p className="pack-desc">Le pack ultime pour exposants ambitieux.</p>
 
               <ul className="pack-list">
                 <li>15 photos HD</li>
@@ -228,7 +235,7 @@ function App() {
               <div className="pack-footer">Prêt à publier</div>
             </article>
 
-            {/* PACK BRAND UPGRADE */}
+            {/* BRAND UPGRADE */}
             <article className="card pack-card pack-strategy">
               <div className="pack-header">
                 <span className="pack-icon">🧠</span>
@@ -346,17 +353,15 @@ function App() {
           </div>
 
           <div className="flyer-grid">
-            {[Flyer1, Flyer2, Flyer3, Flyer4, Flyer5, Flyer6].map(
-              (img, i, arr) => (
-                <img
-                  key={i}
-                  src={img}
-                  className="flyer"
-                  alt={`flyer ${i + 1}`}
-                  onClick={() => openLightbox(img, arr)}
-                />
-              )
-            )}
+            {flyerImages.map((img, i, arr) => (
+              <img
+                key={i}
+                src={img}
+                className="flyer"
+                alt={`flyer ${i + 1}`}
+                onClick={() => openLightbox(img, arr)}
+              />
+            ))}
           </div>
         </section>
 
@@ -369,22 +374,20 @@ function App() {
 
           <h3 className="sub-section-title">📦 Packshot & produits</h3>
           <div className="work-grid">
-            {[Madame1, Madame2, Madame3, Madame4, Madame5, Madame6, Madame7].map(
-              (img, i, arr) => (
-                <img
-                  key={i}
-                  src={img}
-                  className="work-img"
-                  alt="packshot"
-                  onClick={() => openLightbox(img, arr)}
-                />
-              )
-            )}
+            {packshotImages.map((img, i, arr) => (
+              <img
+                key={i}
+                src={img}
+                className="work-img"
+                alt="packshot"
+                onClick={() => openLightbox(img, arr)}
+              />
+            ))}
           </div>
 
           <h3 className="sub-section-title">👩🏾‍🦱 Marque & modèle</h3>
           <div className="work-grid">
-            {[Model1, Model2, Model3, Model4].map((img, i, arr) => (
+            {modelImages.map((img, i, arr) => (
               <img
                 key={i}
                 src={img}
@@ -425,7 +428,7 @@ function App() {
         </footer>
       </main>
 
-      {/* LIGHTBOX OVERLAY */}
+      {/* LIGHTBOX */}
       {lightboxOpen && currentImage && (
         <div className="lightbox" onClick={closeLightbox}>
           <img
