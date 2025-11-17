@@ -138,7 +138,7 @@ const handleDownloadCard = async () => {
 
   // Valeurs affichées (fallback si vide)
   const displayBrand = cardData.brand || "Nom de votre marque";
-  const displayStand = cardData.stand || "Stand B12";
+  const displayStand = cardData.stand || ":";
   const displayInsta = cardData.instagram || "@votre.instagram";
   const displayPhone = cardData.phone || "+33 6 XX XX XX XX";
 
