@@ -473,6 +473,32 @@ a {
   margin-bottom: 20px;
 }
 
+.see-more-card {
+  border-radius: 16px;
+  border: 1px dashed rgba(255, 255, 255, 0.25);
+  background: rgba(10, 10, 20, 0.85);
+  color: #f7f7ff;
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 120px;
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.6);
+  transition: 0.2s;
+}
+
+.see-more-card:hover {
+  border-style: solid;
+  border-color: rgba(246, 196, 83, 0.9);
+  box-shadow:
+    0 16px 34px rgba(0, 0, 0, 0.8),
+    0 0 16px rgba(246, 196, 83, 0.5);
+  transform: translateY(-2px);
+}
+
 .work-img {
   width: 100%;
   max-height: 320px;
@@ -654,4 +680,827 @@ a {
   .work-grid {
     grid-template-columns: 1fr;
   }
+}
+.gc-download-btn {
+  margin-top: 10px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  background: linear-gradient(120deg, var(--accent), var(--accent-soft));
+  color: #111;
+  box-shadow: 0 0 18px rgba(255, 193, 80, 0.55);
+}
+
+.gc-download-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 0 26px rgba(255, 193, 80, 0.85);
+}
+
+.gc-download-hint {
+  margin-top: 6px;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+/* ===========================
+   GENERATEUR CARTE SALON
+   =========================== */
+
+.gc-layout {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+/* Formulaire à gauche */
+.gc-form {
+  flex: 1 1 260px;
+  background: rgba(15, 15, 30, 0.9);
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 16px 18px;
+}
+
+.gc-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 10px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.gc-field span {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.gc-field input {
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(5, 5, 15, 0.9);
+  padding: 8px 12px;
+  font-size: 0.9rem;
+  color: var(--text);
+  outline: none;
+}
+
+.gc-field input::placeholder {
+  color: #5f6080;
+}
+
+.gc-field input:focus {
+  border-color: rgba(246, 196, 83, 0.7);
+  box-shadow: 0 0 0 1px rgba(246, 196, 83, 0.4);
+}
+
+.gc-tip {
+  margin-top: 4px;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+/* Zone preview à droite */
+.gc-preview {
+  flex: 1 1 260px;
+  display: flex;
+  justify-content: center;
+}
+
+/* Scène 3D */
+.gc-scene {
+  width: 100%;
+  max-width: 420px;
+  perspective: 1400px;
+  position: relative;
+}
+
+@media (max-width: 768px) {
+  .gc-scene {
+    max-width: 340px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .gc-scene {
+    max-width: 300px;
+  }
+}
+
+/* Conteneur de la carte */
+/* .gc-card {
+  position: relative;
+  width: 100%;
+  padding-top: 62%; 
+  transform-style: preserve-3d;
+  transition: transform 0.7s ease;
+  cursor: pointer;
+} */
+
+/* Effet de flip */
+.gc-card.is-flipped {
+  transform: rotateY(180deg);
+}
+
+/* Faces de la carte */
+
+
+.gc-face {
+  position: absolute;
+  inset: 0;
+  border-radius: 20px; /* un peu moins que 24px du parent */
+  padding: 20px 24px;
+  background: radial-gradient(circle at top left, #272747 0, #050509 65%);
+  box-shadow:
+    0 22px 60px rgba(0, 0, 0, 0.85),
+    0 0 30px rgba(0, 0, 0, 0.9);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* RECTO */
+.gc-front {
+  background: radial-gradient(circle at top left, #292744 0, #05040d 60%);
+  position: relative;
+}
+
+/* Bande & chip déco */
+.gc-strip {
+  position: absolute;
+  inset: -40%;
+  opacity: 0.25;
+  background: radial-gradient(circle at 0 0, #f6c453 0, transparent 60%);
+  pointer-events: none;
+}
+
+.gc-chip {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  width: 34px;
+  height: 24px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #f1e2b8, #b68f46);
+  opacity: 0.6;
+}
+
+.gc-front-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.gc-label {
+  font-family: "Inter", sans-serif;
+  font-size: 11px;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+/* .gc-title {
+  font-family: "Playfair Display", serif;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin-top: 4px;
+  margin-bottom: 4px;
+
+  background: linear-gradient(90deg, #ffe6b0, #ffd48a, #ffc06a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  text-shadow: 0 0 6px rgba(255, 210, 150, 0.25);
+} */
+
+.gc-badge {
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  background: rgba(255, 255, 255, 0.12);
+  padding: 6px 12px;
+  border-radius: 8px;
+  backdrop-filter: blur(4px);
+}
+
+.gc-front-middle {
+  margin-top: 10px;
+  position: relative;
+  z-index: 1;
+}
+
+.gc-export-face .gc-stand {
+  background: none !important;
+  -webkit-text-fill-color: #ffdca0 !important;
+  color: #ffdca0 !important;  /* fallback */
+}
+
+.gc-stand span {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.gc-front-text {
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  opacity: 0.75;
+  font-style: italic;
+  max-width: 240px;
+}
+
+.gc-front-bottom {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 0.78rem;
+  color: #a9a6d6;
+  margin-top: 14px;
+}
+
+/* VERSO */
+.gc-back {
+  background: radial-gradient(circle at bottom right, #202142 0, #040309 60%);
+  transform: rotateY(180deg); /* 🔹 Pas de rotate(180deg) simple : le texte reste à l'endroit */
+  position: relative;
+}
+
+.gc-back-gradient {
+  position: absolute;
+  inset: -30%;
+  background: radial-gradient(circle at 100% 100%, #f88b4a 0, transparent 55%);
+  opacity: 0.25;
+  pointer-events: none;
+}
+
+.gc-back-block {
+  margin-top: 12px;
+  padding: 14px 12px;
+  border-radius: 18px;
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative;
+  z-index: 1;
+}
+
+.gc-back-line {
+  font-size: 0.9rem;
+  color: #ecebff;
+}
+
+.gc-back-line + .gc-back-line {
+  margin-top: 6px;
+}
+
+.gc-back-line span {
+  font-weight: 500;
+}
+
+.gc-back-footer {
+  margin-top: 10px;
+  font-size: 0.75rem;
+  color: #8f8dbb;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+/* Download (tu l'avais déjà, je le laisse ici pour être groupé) */
+.gc-download-btn {
+  margin-top: 10px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  background: linear-gradient(120deg, var(--accent), var(--accent-soft));
+  color: #111;
+  box-shadow: 0 0 18px rgba(255, 193, 80, 0.55);
+}
+
+.gc-download-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 0 26px rgba(255, 193, 80, 0.85);
+}
+
+.gc-download-hint {
+  margin-top: 6px;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+/* Responsive carte */
+@media (max-width: 900px) {
+  .gc-layout {
+    flex-direction: column;
+  }
+
+  .gc-preview {
+    order: -1;
+  }
+}
+
+@media (max-width: 480px) {
+  .gc-form {
+    padding: 14px 12px;
+  }
+
+  .gc-face {
+    padding: 16px 14px;
+    border-radius: 18px;
+  }
+
+  .gc-title {
+    font-size: 1.2rem;
+  }
+}
+
+/* === GENERATEUR DE CARTE SALON === */
+
+.gc-layout {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.gc-form {
+  flex: 1 1 260px;
+  max-width: 360px;
+  background: var(--card-soft);
+  border-radius: var(--radius);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 16px 18px;
+}
+
+.gc-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 10px;
+  font-size: 0.86rem;
+}
+
+.gc-field span {
+  color: var(--muted);
+}
+
+.gc-field input {
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: #050509;
+  color: var(--text);
+  padding: 8px 12px;
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.gc-field input::placeholder {
+  color: #66688b;
+}
+
+.gc-field input:focus {
+  border-color: rgba(246, 196, 83, 0.7);
+  box-shadow: 0 0 0 1px rgba(246, 196, 83, 0.4);
+}
+
+.gc-tip {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-top: 6px;
+}
+
+/* zone preview */
+
+.gc-preview {
+  flex: 1 1 280px;
+  display: flex;
+  justify-content: center;
+}
+
+.gc-scene {
+  width: 100%;
+  max-width: 360px;      /* largeur max sur desktop / grand mobile */
+  margin: 0 auto;
+  perspective: 1200px;
+}
+
+/* sur très petit mobile, on laisse respirer */
+@media (max-width: 480px) {
+  .gc-scene {
+    max-width: 320px;
+  }
+}
+
+/* carte 3D */
+
+/* .gc-card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+  cursor: pointer;
+} */
+
+.gc-card.is-flipped {
+  transform: rotateY(180deg);
+}
+
+/* 2 faces superposées */
+
+/* CARTE 3D AVEC BORDURE GOLD */
+
+
+/* front */
+
+.gc-front {
+  z-index: 2;
+}
+
+.gc-strip {
+  position: absolute;
+  inset: 0;
+  border-radius: 26px;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0.06),
+    rgba(50, 50, 90, 0.3)
+  );
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.gc-chip {
+  position: absolute;
+  top: 18px;
+  left: 24px;
+  width: 32px;
+  height: 22px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: radial-gradient(circle at top, #f6c453, #7c5a2a);
+  opacity: 0.25;
+}
+
+.gc-front-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.gc-label {
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.7rem;
+  color: var(--muted);
+  margin: 0 0 6px;
+}
+
+.gc-title {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.gc-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(246, 196, 83, 0.7);
+  background: rgba(10, 10, 20, 0.9);
+  font-size: 0.75rem;
+  color: var(--accent);
+}
+
+.gc-front-middle {
+  margin-top: 14px;
+  position: relative;
+  z-index: 1;
+}
+
+.gc-stand {
+  margin: 0 0 4px;
+  font-size: 1rem;
+}
+
+.gc-stand span {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.gc-front-text {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #d7d7ff;
+}
+
+.gc-front-bottom {
+  margin-top: 22px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+/* back */
+
+.gc-back {
+  transform: rotateY(180deg);
+}
+
+.gc-back-gradient {
+  position: absolute;
+  inset: 0;
+  border-radius: 26px;
+  background: radial-gradient(circle at bottom right, #f88b4a22, transparent);
+  pointer-events: none;
+}
+
+.gc-back-block {
+  position: relative;
+  z-index: 1;
+  margin-top: 14px;
+  padding: 16px 18px;
+  border-radius: 18px;
+  background: rgba(5, 5, 12, 0.98);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+
+.gc-back-line {
+  margin: 4px 0;
+  font-size: 0.9rem;
+}
+
+.gc-back-line span {
+  font-weight: 600;
+}
+
+.gc-back-footer {
+  margin-top: 18px;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+/* responsif pour le générateur */
+
+@media (max-width: 768px) {
+  .gc-layout {
+    flex-direction: column;
+  }
+
+  .gc-preview {
+    order: -1;
+  }
+
+  .gc-scene {
+    width: 100%;
+    max-width: 360px;
+    margin: 0 auto;
+  }
+}
+
+/* ===== Carte export (recto + verso dans l'image) ===== */
+
+.gc-export {
+  position: absolute;
+  left: -9999px;    /* hors écran mais toujours rendue */
+  top: -9999px;
+  padding: 24px;
+  background: transparent;
+  font-family: inherit;
+}
+
+.gc-export-row {
+  display: flex;
+  gap: 24px;
+  align-items: stretch;
+}
+
+.gc-export-face {
+  background: radial-gradient(circle at top left, #272747 0, #050509 80%) !important;
+  border: none !important;
+  padding: 20px 24px !important;
+}
+
+
+
+
+.gc-export {
+  position: absolute;
+  left: -9999px;
+  top: -9999px;
+  padding: 24px;
+  background: transparent;
+  font-family: inherit;
+}
+
+.gc-export-row {
+  display: flex;
+  gap: 24px;
+  align-items: stretch;
+}
+
+.gc-export-face {
+  width: 420px;
+  height: 260px;
+  border-radius: 26px;
+  padding: 20px 24px;
+  box-sizing: border-box;
+  box-shadow:
+    0 22px 60px rgba(0, 0, 0, 0.85),
+    0 0 30px rgba(0, 0, 0, 0.9);
+  position: relative;
+  overflow: hidden;
+}
+
+.gc-export-front {
+  background: radial-gradient(circle at top left, #272747 0, #050509 65%);
+}
+
+.gc-export-back {
+  background: radial-gradient(circle at bottom right, #202142 0, #040309 65%);
+}
+
+
+.gc-icon-img {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+.gc-front-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+
+.gc-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  opacity: 0.9;
+}
+
+.gc-icon-img {
+  width: 18px;
+  height: 18px;
+  filter: drop-shadow(0 0 4px rgba(255, 200, 120, 0.4));
+}
+
+.gc-icon-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* .gc-card {
+  position: relative;
+} */
+
+/* =========================================
+   BORDURE GOLD PREMIUM
+   ========================================= */
+/* ===== Carte 3D + bordure gold ===== */
+/* .gc-card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+  cursor: pointer;
+
+  
+  border-radius: 24px;
+  padding: 2px;
+  background:
+    linear-gradient(#050509, #050509) padding-box,
+    linear-gradient(
+      135deg,
+      rgba(255, 215, 140, 1),
+      rgba(255, 180, 90, 0.6),
+      rgba(150, 120, 255, 0.4)
+    ) border-box;
+  border: 2px solid transparent;
+} */
+
+.gc-card.is-flipped {
+  transform: rotateY(180deg);
+}
+
+@media (max-width: 480px) {
+  .gc-preview {
+    justify-content: center;
+  }
+
+  .gc-scene {
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto;
+  }
+}
+
+/* ===== Carte 3D + Bordure Gold Premium ===== */
+.gc-card {
+  position: relative;
+  width: 100%;
+  
+  /* Ratio carte bancaire → stable sur mobile */
+  padding-top: 1%;
+
+  transform-style: preserve-3d;
+  transition: transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+  cursor: pointer;
+
+  /* Bordure gold premium */
+  border-radius: 24px;
+  background:
+    linear-gradient(#050509, #050509) padding-box,
+    linear-gradient(
+      135deg,
+      rgba(255, 215, 140, 1),
+      rgba(255, 180, 90, 0.6),
+      rgba(150, 120, 255, 0.4)
+    ) border-box;
+  border: 2px solid transparent;
+}
+
+.gc-card.is-flipped {
+  transform: rotateY(180deg);
+}
+
+.gc-front-phrase {
+  font-size: 0.9rem;
+  opacity: 0.55;
+  font-weight: 300;
+  letter-spacing: 0.4px;
+  color: rgba(255, 255, 255, 0.55);
+  text-shadow: 0 0 6px rgba(255, 200, 150, 0.12);
+}
+
+@keyframes goldFade {
+  0% {
+    color: rgba(255, 255, 255, 0.55);
+    text-shadow:
+      0 0 4px rgba(255, 204, 120, 0.1),
+      0 0 10px rgba(255, 184, 80, 0.05);
+  }
+  100% {
+    color: rgba(255, 209, 195, 0.85);
+    text-shadow:
+      0 0 6px rgba(255, 204, 120, 0.25),
+      0 0 14px rgba(255, 184, 80, 0.15);
+  }
+}
+.gc-card, 
+.gc-card * {
+  user-select: none !important;
+  -webkit-user-select: none !important;
+}
+
+/* --- Fix pour l'export : pas de gradient sur le texte ---  */
+
+/* Titre (nom de la marque) dans l'export */
+.gc-export-face .gc-title {
+  background: none !important;
+  -webkit-background-clip: border-box !important;
+  -webkit-text-fill-color: #ffe6c0 !important;
+  color: #ca3207 !important;
+  text-shadow: 0 0 6px rgba(255, 210, 150, 0.25);
+}
+
+/* "Stand XXX" dans l'export – déjà proposé mais je le remets pour être sûr */
+.gc-export-face .gc-stand {
+  background: none !important;
+  -webkit-background-clip: border-box !important;
+  -webkit-text-fill-color: #0910c5 !important;
+  color: #ffdca0 !important;
+}
+.gc-insta-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 30% 30%, #fff 0, #fff 10%, transparent 40%),
+    radial-gradient(circle at 0 120%, #feda75 0, #fa7e1e 30%, #d62976 55%, #962fbf 75%, #4f5bd5 100%);
+  box-shadow: 0 0 6px rgba(255, 200, 150, 0.5);
+  flex-shrink: 0;
 }

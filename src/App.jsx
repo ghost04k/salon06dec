@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import "./App.css";
 
 /* FLYERS */
@@ -27,6 +27,11 @@ import Model2 from "./assets/model2.jpg";
 import Model3 from "./assets/model3.jpg";
 import Model4 from "./assets/model4.jpg";
 
+import html2canvas from "html2canvas";
+
+import InstaIcon from "./assets/insta.svg";
+import PhoneIcon from "./assets/phone.svg";
+
 function App() {
   // 🔗 WhatsApp
   const whatsappNumber = "33624637237";
@@ -45,6 +50,57 @@ function App() {
   const [navOpen, setNavOpen] = useState(false);
   const toggleNav = () => setNavOpen((v) => !v);
   const closeNav = () => setNavOpen(false);
+
+  // 🎴 Générateur de carte salon
+  const [cardData, setCardData] = useState({
+    brand: "",
+    stand: "",
+    instagram: "",
+    phone: "",
+  });
+
+  // const [cardFlipped, setCardFlipped] = useState(false);
+  // const cardRef = useRef(null);
+
+
+const [cardFlipped, setCardFlipped] = useState(false);
+const cardRef = useRef(null);      // pour la carte 3D (aperçu si tu veux)
+//const exportRef = useRef(null);    // 🔥 pour la carte d’export (plate)
+
+  const handleCardChange = (e) => {
+    const { name, value } = e.target;
+    setCardData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const toggleCardFlip = () => setCardFlipped((v) => !v);
+
+const handleDownloadCard = async () => {
+  if (!cardRef.current) return;
+
+  // Empêche un champ du formulaire d'être sélectionné
+  document.activeElement.blur();
+
+  try {
+    const canvas = await html2canvas(cardRef.current, {
+      backgroundColor: null,
+      scale: 2,
+      useCORS: true,
+    });
+
+    const dataURL = canvas.toDataURL("image/png");
+    const link = document.createElement("a");
+
+    const cleanBrand = (cardData.brand || "carte-salon")
+      .toLowerCase()
+      .replace(/\s+/g, "-");
+
+    link.href = dataURL;
+    link.download = `${cleanBrand}-salon.png`;
+    link.click();
+  } catch (err) {
+    console.error("Erreur :", err);
+  }
+};
 
   const openLightbox = (img, list) => {
     setCurrentImage(img);
@@ -79,6 +135,12 @@ function App() {
     Madame7,
   ];
   const modelImages = [Model1, Model2, Model3, Model4];
+
+  // Valeurs affichées (fallback si vide)
+  const displayBrand = cardData.brand || "Nom de votre marque";
+  const displayStand = cardData.stand || "Stand B12";
+  const displayInsta = cardData.instagram || "@votre.instagram";
+  const displayPhone = cardData.phone || "+33 6 XX XX XX XX";
 
   return (
     <>
@@ -116,6 +178,9 @@ function App() {
           </a>
           <a href="#realisations" onClick={closeNav}>
             Réalisations
+          </a>
+          <a href="#card-generator" onClick={closeNav}>
+            Carte salon
           </a>
 
           <a
@@ -264,14 +329,15 @@ function App() {
           </div>
         </section>
 
-        {/* SITES + SEO */}
+        {/* SITES + SEO + BRANDING */}
         <section id="sites" className="section">
           <div className="section-head">
             <h2>Accompagnement digital</h2>
-            <p>Sites web, SEO local et image de marque.</p>
+            <p>Sites web, SEO local et identité de marque.</p>
           </div>
 
           <div className="services-grid">
+            {/* SITES WEB */}
             <article className="service-card">
               <h3>🌐 Sites Web Professionnels</h3>
               <p className="service-sub">
@@ -288,6 +354,7 @@ function App() {
               <div className="service-tag">Tarifs Salon</div>
             </article>
 
+            {/* SEO LOCAL */}
             <article className="service-card">
               <h3>🔍 SEO Local</h3>
               <p className="service-sub">Gagnez en visibilité sur Google & Maps.</p>
@@ -300,6 +367,23 @@ function App() {
               </ul>
 
               <div className="service-tag">+30 clients accompagnés</div>
+            </article>
+
+            {/* BRANDING / LOGO */}
+            <article className="service-card">
+              <h3>🎨 Logo & identité visuelle</h3>
+              <p className="service-sub">
+                Une image de marque cohérente, pro et mémorable.
+              </p>
+
+              <ul>
+                <li>Création ou refonte de logo</li>
+                <li>Palette couleurs & typographies</li>
+                <li>Mini charte graphique PDF</li>
+                <li>Déclinaisons pour réseaux & flyers</li>
+              </ul>
+
+              <div className="service-tag">Pack spécial exposants</div>
             </article>
           </div>
         </section>
@@ -347,23 +431,36 @@ function App() {
         </section>
 
         {/* FLYERS */}
-        <section id="flyers" className="section">
-          <div className="section-head">
-            <h2>Exemples de flyers</h2>
-          </div>
+       {/* FLYERS */}
+<section id="flyers" className="section">
+  <div className="section-head">
+    <h2>Exemples de flyers</h2>
+  </div>
 
-          <div className="flyer-grid">
-            {flyerImages.map((img, i, arr) => (
-              <img
-                key={i}
-                src={img}
-                className="flyer"
-                alt={`flyer ${i + 1}`}
-                onClick={() => openLightbox(img, arr)}
-              />
-            ))}
-          </div>
-        </section>
+  <div className="flyer-grid">
+    {/* 3 premiers flyers seulement */}
+    {flyerImages.slice(0, 3).map((img, i) => (
+      <img
+        key={i}
+        src={img}
+        className="flyer"
+        alt={`flyer ${i + 1}`}
+        onClick={() => openLightbox(img, flyerImages)} // 👉 on passe TOUTE la liste
+      />
+    ))}
+
+    {/* Carte "voir plus" */}
+    {flyerImages.length > 3 && (
+      <button
+        type="button"
+        className="see-more-card"
+        onClick={() => openLightbox(flyerImages[0], flyerImages)}
+      >
+        Voir tous les flyers
+      </button>
+    )}
+  </div>
+</section>
 
         {/* REALISATIONS */}
         <section id="realisations" className="section">
@@ -374,30 +471,291 @@ function App() {
 
           <h3 className="sub-section-title">📦 Packshot & produits</h3>
           <div className="work-grid">
-            {packshotImages.map((img, i, arr) => (
+            {packshotImages.slice(0, 3).map((img, i) => (
               <img
                 key={i}
                 src={img}
                 className="work-img"
                 alt="packshot"
-                onClick={() => openLightbox(img, arr)}
+                onClick={() => openLightbox(img, packshotImages)}
               />
             ))}
+
+            {packshotImages.length > 3 && (
+              <button
+                type="button"
+                className="see-more-card"
+                onClick={() => openLightbox(packshotImages[0], packshotImages)}
+              >
+                Voir plus de produits
+              </button>
+            )}
           </div>
 
           <h3 className="sub-section-title">👩🏾‍🦱 Marque & modèle</h3>
           <div className="work-grid">
-            {modelImages.map((img, i, arr) => (
+            {modelImages.slice(0, 3).map((img, i) => (
               <img
                 key={i}
                 src={img}
                 className="work-img"
                 alt="model"
-                onClick={() => openLightbox(img, arr)}
+                onClick={() => openLightbox(img, modelImages)}
               />
             ))}
-          </div>
+
+  {modelImages.length > 3 && (
+    <button
+      type="button"
+      className="see-more-card"
+      onClick={() => openLightbox(modelImages[0], modelImages)}
+    >
+      Voir plus de modèles
+    </button>
+  )}
+</div>
         </section>
+
+       {/* 🎴 GENERATEUR DE CARTE SALON — JUSTE AVANT CONTACT */}
+{/* 🎴 GENERATEUR DE CARTE SALON — JUSTE AVANT CONTACT */}
+<section id="card-generator" className="section">
+  <div className="section-head">
+    <h2>Crée ta carte salon gratuite</h2>
+    <p>
+      Remplis tes infos, télécharge ta carte et partage-la sur tes réseaux.
+    </p>
+  </div>
+
+  <div className="gc-layout">
+    {/* FORMULAIRE */}
+    <form
+      className="gc-form"
+      onSubmit={(e) => {
+        e.preventDefault();
+      }}
+    >
+      <label className="gc-field">
+        <span>Nom de la marque</span>
+        <input
+          type="text"
+          name="brand"
+          placeholder="Ex : Maya Boutique"
+          value={cardData.brand}
+          onChange={handleCardChange}
+        />
+      </label>
+
+      <label className="gc-field">
+        <span>Numéro de stand</span>
+        <input
+          type="text"
+          name="stand"
+          placeholder="Ex : 013"
+          value={cardData.stand}
+          onChange={handleCardChange}
+        />
+      </label>
+
+      <label className="gc-field">
+        <span>Instagram (optionnel)</span>
+        <input
+          type="text"
+          name="instagram"
+          placeholder="@ton.compte"
+          value={cardData.instagram}
+          onChange={handleCardChange}
+        />
+      </label>
+
+      <label className="gc-field">
+        <span>WhatsApp / téléphone (optionnel)</span>
+        <input
+          type="text"
+          name="phone"
+          placeholder="+33 6 XX XX XX XX"
+          value={cardData.phone}
+          onChange={handleCardChange}
+        />
+      </label>
+
+      <p className="gc-tip">
+        👉 Clique sur la carte pour voir le recto / verso, puis télécharge le
+        visuel en PNG.
+      </p>
+
+      <button
+        type="button"
+        className="gc-download-btn"
+        onClick={handleDownloadCard}
+      >
+        Télécharger la carte (.png)
+      </button>
+      <p className="gc-download-hint">
+        Une fois téléchargée, partage-la en story, WhatsApp, newsletter, etc.
+      </p>
+    </form>
+
+    {/* 🔥 VERSION EXPORT (PLATE, CACHÉE POUR html2canvas) */}
+    {/* <div className="gc-export" ref={exportRef}>
+      <div className="gc-export-row">
+        
+        <div className="gc-export-face gc-export-front">
+          <div className="gc-front-top">
+            <div>
+              <p className="gc-label">Carte salon 2025</p>
+              <h3 className="gc-title">{displayBrand}</h3>
+            </div>
+            <span className="gc-badge">Lyon · 06 Déc.</span>
+          </div>
+
+          <div className="gc-front-middle">
+            <p className="gc-stand">
+              Stand <span>{displayStand}</span>
+            </p>     
+            <p className="gc-front-phrase">
+              Retrouve-nous au Marché de fin d’année
+            </p>
+          </div>
+
+          <div className="gc-front-bottom">
+            <span className="gc-info">
+              <img src={InstaIcon} alt="Instagram" className="gc-icon-img" />
+              {displayInsta}
+            </span>
+            <span className="gc-info">
+              <img src={PhoneIcon} alt="Téléphone" className="gc-icon-img" />
+              {displayPhone}
+            </span>
+          </div>
+        </div>
+
+      
+        <div className="gc-export-face gc-export-back">
+          <p className="gc-label">Coordonnées</p>
+
+          <div className="gc-back-block">
+            <p className="gc-back-line">
+              👤 <span>{displayBrand}</span>
+            </p>
+            <p className="gc-back-line">
+              📍 Stand <span>{displayStand}</span>
+            </p>
+            <p className="gc-back-line">
+              <span className="gc-icon-row">
+                <img
+                  src={PhoneIcon}
+                  alt="Téléphone"
+                  className="gc-icon-img"
+                />
+                <span>{displayPhone}</span>
+              </span>
+            </p>
+            <p className="gc-back-line">
+              <span className="gc-icon-row">
+                <img
+                  src={InstaIcon}
+                  alt="Instagram"
+                  className="gc-icon-img"
+                />
+                <span>{displayInsta}</span>
+              </span>
+            </p>
+          </div>
+
+          <p className="gc-back-footer">
+            Guide : retourne la carte pour voir le verso · Download = prêt à
+            partager.
+          </p>
+        </div>
+      </div>
+    </div> */}
+
+    {/* PREVIEW 3D (FLIP AU CLIC) */}
+    <div className="gc-preview">
+      <div className="gc-scene">
+        <div
+          className={`gc-card ${cardFlipped ? "is-flipped" : ""}`}
+          onClick={toggleCardFlip}
+          ref={cardRef}
+        >
+          {/* RECTO 3D */}
+          <div className="gc-face gc-front">
+            <div className="gc-strip" />
+            <div className="gc-chip" />
+
+            <div className="gc-front-top">
+              <div>
+                <p className="gc-label">Carte salon 2025</p>
+                <h3 className="gc-title">{displayBrand}</h3>
+              </div>
+              <span className="gc-badge">Lyon · 06 Déc.</span>
+            </div>
+
+            <div className="gc-front-middle">
+              <p className="gc-stand">
+                Stand <span>{displayStand}</span>
+              </p>
+              <p className="gc-front-phrase">
+              Retrouve-nous au Marché de fin d’année 
+            </p>
+            </div>
+
+            <div className="gc-front-bottom">
+              <span className="gc-info">
+                <span className="gc-insta-dot" />
+                {displayInsta.startsWith("@") ? displayInsta : `@${displayInsta}`}
+              </span>
+              <span className="gc-info">
+                <img src={PhoneIcon} alt="Téléphone" className="gc-icon-img" />
+                {displayPhone}
+              </span>
+            </div>
+          </div>
+
+          {/* VERSO 3D */}
+          {/* <div className="gc-face gc-back">
+            <div className="gc-back-gradient" />
+
+            <p className="gc-label">Coordonnées</p>
+
+            <div className="gc-back-block">
+              <p className="gc-back-line">
+                👤 <span>{displayBrand}</span>
+              </p>
+              <p className="gc-back-line">
+                📍 Stand <span>{displayStand}</span>
+              </p>
+              <p className="gc-back-line">
+                <span className="gc-icon-row">
+                  <img
+                    src={PhoneIcon}
+                    alt="Téléphone"
+                    className="gc-icon-img"
+                  />
+                  <span>{displayPhone}</span>
+                </span>
+              </p>
+              <p className="gc-back-line">
+                <span className="gc-icon-row">
+                  <img
+                    src={InstaIcon}
+                    alt="Instagram"
+                    className="gc-icon-img"
+                  />
+                  <span>{displayInsta}</span>
+                </span>
+              </p>
+            </div>
+
+            <p className="gc-back-footer">
+              Clique pour retourner la carte · Download = prêt à partager.
+            </p>
+          </div> */}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
         {/* CONTACT */}
         <section id="contact" className="section">

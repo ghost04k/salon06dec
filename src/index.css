@@ -31,3 +31,248 @@ body,
 body {
   background: radial-gradient(circle at top, #18182b 0, #050509 55%);
 }
+
+/* === GENERATEUR DE CARTE SALON === */
+
+.gc-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 24px;
+  align-items: flex-start;
+  margin-top: 10px;
+}
+
+.gc-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.gc-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+.gc-field span {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.gc-field input {
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(10, 10, 20, 0.9);
+  color: var(--text);
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.gc-field input:focus {
+  border-color: rgba(246, 196, 83, 0.9);
+  box-shadow: 0 0 0 1px rgba(246, 196, 83, 0.6);
+}
+
+.gc-tip {
+  margin-top: 4px;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+/* PREVIEW 3D */
+
+.gc-preview {
+  display: flex;
+  justify-content: center;
+}
+
+.gc-scene {
+  width: 100%;
+  max-width: 380px;
+  perspective: 1200px;
+}
+
+.gc-card {
+  position: relative;
+  width: 100%;
+  padding-top: 62%; /* ratio carte */
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+  cursor: pointer;
+}
+
+.gc-card:hover {
+  transform: translateY(-4px) rotateY(-4deg);
+}
+
+.gc-card.is-flipped {
+  transform: rotateY(180deg);
+}
+
+.gc-face {
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  overflow: hidden;
+  backface-visibility: hidden;
+  box-shadow: 0 22px 50px rgba(0, 0, 0, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  display: flex;
+  flex-direction: column;
+  padding: 14px 16px;
+  font-size: 0.9rem;
+}
+
+/* RECTO */
+
+.gc-front {
+  background:
+    radial-gradient(circle at top left, rgba(246,196,83,0.26), transparent 55%),
+    radial-gradient(circle at bottom right, rgba(130,203,255,0.26), transparent 55%),
+    linear-gradient(135deg, #0c0c18, #15152a);
+  position: relative;
+  color: #fdfdfd;
+}
+
+.gc-strip {
+  position: absolute;
+  top: 0;
+  left: -10%;
+  right: -10%;
+  height: 32%;
+  background: radial-gradient(circle at top left, rgba(248,139,74,0.5), transparent 60%);
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.gc-chip {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  width: 40px;
+  height: 26px;
+  border-radius: 8px;
+  background: linear-gradient(120deg, #f6c453, #f88b4a);
+  box-shadow: 0 0 16px rgba(246, 196, 83, 0.7);
+}
+
+.gc-front-top {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.gc-label {
+  margin: 0 0 3px;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+}
+
+.gc-title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.gc-badge {
+  font-size: 0.78rem;
+  padding: 3px 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.gc-front-middle {
+  margin-top: 4px;
+}
+
+.gc-stand {
+  margin: 0 0 2px;
+  font-size: 0.9rem;
+}
+
+.gc-stand span {
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.gc-front-text {
+  margin: 2px 0 0;
+  font-size: 0.84rem;
+  color: #e3e3ff;
+}
+
+.gc-front-bottom {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+/* VERSO */
+
+.gc-back {
+  background:
+    radial-gradient(circle at bottom right, rgba(248,139,74,0.3), transparent 60%),
+    linear-gradient(145deg, #050509, #17172a);
+  color: #fdfdfd;
+  transform: rotateY(180deg);
+  position: relative;
+}
+
+.gc-back-gradient {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(130,203,255,0.18), transparent 65%);
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+.gc-back-block {
+  position: relative;
+  margin-top: 6px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: rgba(4, 4, 12, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.gc-back-line {
+  display: flex;
+  gap: 6px;
+  align-items: baseline;
+  margin: 2px 0;
+  font-size: 0.86rem;
+}
+
+.gc-back-line span {
+  font-weight: 600;
+}
+
+.gc-back-footer {
+  margin-top: auto;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+/* RESPONSIVE GENERATEUR */
+
+@media (max-width: 900px) {
+  .gc-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .gc-preview {
+    margin-top: 10px;
+  }
+}
